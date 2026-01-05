@@ -1,0 +1,5 @@
+{
+  "name": "GymExplore",
+  "description": "Una aplicación integral para gestionar rutinas de gimnasio, registrar entrenamientos en tiempo real y analizar el progreso con ayuda de IA.",
+  "requestFramePermissions": []
+}

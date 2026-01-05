@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import Home from './components/Home';
-import Routines from './components/Routines';
-import Summary from './components/Summary';
-import ProfileSetup from './components/ProfileSetup';
-import Logo from './components/Logo';
+import Home from './Home';
+import Routines from './Routines';
+import Summary from './Summary';
+import ProfileSetup from './ProfileSetup';
+import Logo from './Logo';
 import { WeeklyRoutine, WorkoutSession, UserProfile } from './types';
 
 const INITIAL_ROUTINE: WeeklyRoutine = {
@@ -71,22 +71,8 @@ const App: React.FC = () => {
     return <ProfileSetup onSave={saveProfile} />;
   }
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <Home routine={routine} profile={profile} onSaveWorkout={saveWorkout} />;
-      case 'routines':
-        return <Routines routine={routine} onUpdateRoutine={saveRoutine} />;
-      case 'summary':
-        return <Summary history={history} />;
-      default:
-        return <Home routine={routine} profile={profile} onSaveWorkout={saveWorkout} />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100">
-      {/* App Bar */}
       <nav className="bg-slate-900/50 border-b border-slate-800 px-6 py-4 sticky top-0 z-40 flex justify-between items-center backdrop-blur-md">
         <div className="flex items-center gap-3">
           <Logo size="sm" showText={false} />
@@ -94,47 +80,29 @@ const App: React.FC = () => {
             Gym<span className="logo-gradient-text">Explore</span>
           </span>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right hidden sm:block">
-            <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">{profile.name}</p>
-            <p className="text-[8px] text-slate-500 uppercase font-bold">{profile.email}</p>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="w-9 h-9 rounded-full border-2 border-slate-800 overflow-hidden bg-slate-900 flex items-center justify-center hover:border-red-500/50 transition-all group"
-          >
-             <i className="fas fa-sign-out-alt text-slate-600 text-xs group-hover:text-red-500"></i>
-          </button>
-        </div>
+        <button onClick={handleLogout} className="w-9 h-9 rounded-full border-2 border-slate-800 bg-slate-900 flex items-center justify-center">
+             <i className="fas fa-sign-out-alt text-slate-600 text-xs"></i>
+        </button>
       </nav>
 
-      {/* Main Content Area */}
       <main className="flex-1 overflow-x-hidden">
-        {renderContent()}
+        {activeTab === 'home' && <Home routine={routine} profile={profile} onSaveWorkout={saveWorkout} />}
+        {activeTab === 'routines' && <Routines routine={routine} onUpdateRoutine={saveRoutine} />}
+        {activeTab === 'summary' && <Summary history={history} />}
       </main>
 
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 glass-effect-dark px-8 py-4 flex justify-between items-center z-40">
-        <button 
-          onClick={() => setActiveTab('home')}
-          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'home' ? 'text-emerald-400 scale-110' : 'text-slate-500 hover:text-slate-300'}`}
-        >
+      <div className="fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-lg px-8 py-4 flex justify-between items-center z-40 border-t border-slate-800">
+        <button onClick={() => setActiveTab('home')} className={`flex flex-col items-center gap-1 ${activeTab === 'home' ? 'text-emerald-400' : 'text-slate-500'}`}>
           <i className="fas fa-house-fire text-xl"></i>
-          <span className="text-[10px] font-bold uppercase tracking-widest">Inicio</span>
+          <span className="text-[10px] font-bold uppercase">Inicio</span>
         </button>
-        <button 
-          onClick={() => setActiveTab('routines')}
-          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'routines' ? 'text-emerald-400 scale-110' : 'text-slate-500 hover:text-slate-300'}`}
-        >
+        <button onClick={() => setActiveTab('routines')} className={`flex flex-col items-center gap-1 ${activeTab === 'routines' ? 'text-emerald-400' : 'text-slate-500'}`}>
           <i className="fas fa-calendar-day text-xl"></i>
-          <span className="text-[10px] font-bold uppercase tracking-widest">Rutinas</span>
+          <span className="text-[10px] font-bold uppercase">Rutinas</span>
         </button>
-        <button 
-          onClick={() => setActiveTab('summary')}
-          className={`flex flex-col items-center gap-1 transition-all ${activeTab === 'summary' ? 'text-emerald-400 scale-110' : 'text-slate-500 hover:text-slate-300'}`}
-        >
+        <button onClick={() => setActiveTab('summary')} className={`flex flex-col items-center gap-1 ${activeTab === 'summary' ? 'text-emerald-400' : 'text-slate-500'}`}>
           <i className="fas fa-chart-simple text-xl"></i>
-          <span className="text-[10px] font-bold uppercase tracking-widest">Resumen</span>
+          <span className="text-[10px] font-bold uppercase">Resumen</span>
         </button>
       </div>
     </div>
